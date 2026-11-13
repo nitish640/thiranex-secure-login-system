@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<h1>Log in</h1>
+<p class="sub">Thiranex Task 4 — Secure Login System</p>
+<form method="post" action="{{ url_for('login') }}">
+  <label for="username">Username</label>
+  <input type="text" id="username" name="username" required autocomplete="username">
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required autocomplete="current-password">
+  <div class="row">
+    <input type="checkbox" id="show-pw" onclick="togglePw()">
+    <label for="show-pw" style="margin:0">Show password</label>
+  </div>
+  <button type="submit">Log in</button>
+</form>
+<p class="hint">5 failed logins lock the account for 5 minutes. Try an injection string such as <code>' OR '1'='1</code> as the username — it is treated as a literal username and fails safely.</p>
+<p>No account yet? <a href="{{ url_for('register') }}">Register</a></p>
+<script>
+function togglePw() {
+  const el = document.getElementById('password');
+  el.type = document.getElementById('show-pw').checked ? 'text' : 'password';
+}
+</script>
+{% endblock %}

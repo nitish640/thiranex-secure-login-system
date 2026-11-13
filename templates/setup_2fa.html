@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Set up 2FA{% endblock %}
+{% block content %}
+<h1>Set up 2FA</h1>
+<p class="sub">Scan the QR code with an authenticator app (Google Authenticator, Authy, …), then enter the 6-digit code to enable TOTP two-factor authentication.</p>
+<div class="qr"><img src="{{ qr_data_uri }}" alt="TOTP QR code"></div>
+<p class="hint">Can't scan? Enter this secret manually: <code>{{ secret }}</code></p>
+<form method="post" action="{{ url_for('setup_2fa') }}">
+  <label for="code">6-digit code from your authenticator app</label>
+  <input type="text" id="code" name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6">
+  <button type="submit">Enable 2FA</button>
+</form>
+<p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+{% endblock %}

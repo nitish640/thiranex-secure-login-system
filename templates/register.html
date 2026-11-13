@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<h1>Create account</h1>
+<p class="sub">Thiranex Task 4 — Secure Login System</p>
+<form method="post" action="{{ url_for('register') }}">
+  <label for="username">Username</label>
+  <input type="text" id="username" name="username" required minlength="3" maxlength="20"
+         pattern="[A-Za-z0-9_]{3,20}" title="3–20 characters: letters, digits, underscore">
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required>
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password">
+  <div class="meter"><div id="meter-bar"></div></div>
+  <div class="meter-label" id="meter-label">Password strength: —</div>
+  <label for="confirm">Confirm password</label>
+  <input type="password" id="confirm" name="confirm" required minlength="8" autocomplete="new-password">
+  <div class="row">
+    <input type="checkbox" id="show-pw" onclick="togglePw()">
+    <label for="show-pw" style="margin:0">Show password</label>
+  </div>
+  <button type="submit">Register</button>
+</form>
+<p class="hint">Password needs 8+ characters, with an uppercase letter, a lowercase letter, a digit and a special character. Only a bcrypt hash is stored — never the password itself.</p>
+<p>Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+<script>
+function togglePw() {
+  const show = document.getElementById('show-pw').checked;
+  for (const id of ['password', 'confirm']) {
+    document.getElementById(id).type = show ? 'text' : 'password';
+  }
+}
+const pw = document.getElementById('password');
+pw.addEventListener('input', () => {
+  const v = pw.value; let score = 0;
+  if (v.length >= 8) score++;
+  if (v.length >= 12) score++;
+  if (/[A-Z]/.test(v) && /[a-z]/.test(v)) score++;
+  if (/[0-9]/.test(v)) score++;
+  if (/[^A-Za-z0-9]/.test(v)) score++;
+  const labels = ['Very weak', 'Weak', 'Fair', 'Good', 'Strong', 'Very strong'];
+  const colours = ['#ef4444', '#f97316', '#eab308', '#84cc16', '#22c55e', '#22c55e'];
+  const bar = document.getElementById('meter-bar');
+  bar.style.width = (score / 5 * 100) + '%';
+  bar.style.background = colours[score];
+  document.getElementById('meter-label').textContent =
+    'Password strength: ' + (v ? labels[score] : '—');
+});
+</script>
+{% endblock %}

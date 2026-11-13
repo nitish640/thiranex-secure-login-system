@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Two-factor authentication{% endblock %}
+{% block content %}
+<h1>Two-factor authentication</h1>
+<p class="sub">Your password was correct. Enter the 6-digit code from your authenticator app to finish logging in.</p>
+<form method="post" action="{{ url_for('verify_2fa') }}">
+  <label for="code">6-digit code</label>
+  <input type="text" id="code" name="code" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autofocus>
+  <button type="submit">Verify &amp; log in</button>
+</form>
+<p><a href="{{ url_for('login') }}">Back to log in</a></p>
+{% endblock %}
